@@ -129,6 +129,16 @@ class AppFixtures extends Fixture
             $livres[] = $livre;
         }
 
+        for($i=0; $i < $count; $i++){
+            $livre = new Livre();
+            $livre->setTitre($this->faker->sentence(4));
+            $livre->setAnneeEdition($this->faker->year());
+            $livre->setNbrPages($this->faker->numberBetween(50, 1500));
+            $livre->setCodeIsbn($this->faker->isbn13());
+
+            $manager->persist($livre);
+            $livres[] = $livre;
+        }
         
     }
 
