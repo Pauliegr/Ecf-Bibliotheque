@@ -36,6 +36,7 @@ class AppFixtures extends Fixture
         $this->loadAdmins($manager, 4);
         $auteurs = $this->loadAuteurs($manager, 5);
         $livres = $this->loadLivres($manager, 3);
+        $emprunteurs = $this->loadEmprunteurs($manager, 3);
    
         $manager->flush();
     }
@@ -78,6 +79,14 @@ class AppFixtures extends Fixture
         }
 
         return $users;
+    }
+
+    public function loadEmprunteurs(ObjectManager $manager, int $count)
+    {
+        $emprunteurs = [];
+
+        $emprunteur = new Emprunteur();
+
     }
 
     public function loadAuteurs(ObjectManager $manager, int $count)
@@ -139,7 +148,7 @@ class AppFixtures extends Fixture
             $manager->persist($livre);
             $livres[] = $livre;
         }
-        
+        return $livres;
     }
 
 
