@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $this->loadAdmins($manager, 4);
+        $this->loadAdmin($manager, 4);
         $emprunteurs = $this->loadEmprunteurs($manager, 3);
         $auteurs = $this->loadAuteurs($manager, 5);
         $livres = $this->loadLivres($manager, 3);
@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    public function loadAdmins(ObjectManager $manager, int $count)
+    public function loadAdmin(ObjectManager $manager, int $count)
     {
         $user = new User();
         $user->setEmail('admin@exmaple.com');
@@ -153,20 +153,8 @@ class AppFixtures extends Fixture
             $auteur->setPrenom($prenoms[$i]);
             
             $manager->persist($auteur);
-
             $auteurs[] = $auteur;
         }
-        
-        for ($i = 0; $i < $count; $i++) {
-            $auteur= new Auteur();
-            $auteur->setNom($this->faker->firstname());
-            $auteur->setPrenom($this->faker->lastname());
-            
-            $manager->persist($auteur);
-
-            $auteurs[] = $auteur;
-        }
-
         return $auteurs;
     }
 
@@ -180,22 +168,34 @@ class AppFixtures extends Fixture
         $isbns = ['9785786930024', '9783817260935', '9782020493727', '9794059561353'];
 
         for($i=0; $i < 4; $i++){
+            $auteur= new Auteur();
+            $auteur->setNom($this->faker->firstname());
+            $auteur->setPrenom($this->faker->lastname());
+            $manager->persist($auteur);
+
             $livre = new Livre();
             $livre->setTitre($titres[$i]);
             $livre->setAnneeEdition($annees[$i]);
             $livre->setNbrPages($pages[$i]);
             $livre->setCodeIsbn($isbns[$i]);
+            $livre->setAuteur($auteur);
 
             $manager->persist($livre);
             $livres[] = $livre;
         }
 
         for($i=0; $i < $count; $i++){
+            $auteur= new Auteur();
+            $auteur->setNom($this->faker->firstname());
+            $auteur->setPrenom($this->faker->lastname());
+            $manager->persist($auteur);
+
             $livre = new Livre();
             $livre->setTitre($this->faker->sentence(4));
             $livre->setAnneeEdition($this->faker->year());
             $livre->setNbrPages($this->faker->numberBetween(50, 1500));
             $livre->setCodeIsbn($this->faker->isbn13());
+            $livre->setAuteur($auteur);
 
             $manager->persist($livre);
             $livres[] = $livre;
