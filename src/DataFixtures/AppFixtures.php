@@ -34,17 +34,16 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $this->loadAdmins($manager, 4);
+        $emprunteurs = $this->loadEmprunteurs($manager, 3);
         $auteurs = $this->loadAuteurs($manager, 5);
         $livres = $this->loadLivres($manager, 3);
-        $emprunteurs = $this->loadEmprunteurs($manager, 3);
+        
    
         $manager->flush();
     }
 
     public function loadAdmins(ObjectManager $manager, int $count)
     {
-        $users = [];
-
         $user = new User();
         $user->setEmail('admin@exmaple.com');
         $password = $this->encoder->encodePassword($user,'123');
@@ -52,20 +51,71 @@ class AppFixtures extends Fixture
         $user->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($user);
-        $users[]= $user;
+       
+    }
 
-        $emails = ['foo.foo@example.com', 'bar.bar@example.com', 'baz.baz@example.com'];
+    public function loadEmprunteurs(ObjectManager $manager, int $count)
+    {
+        $emprunteurs = [];     
 
-        for ($i = 0; $i < 3; $i++) {
-            $user = new User();
-            $user->setEmail($emails[$i]);
-            $password = $this->encoder->encodePassword($user, '123');
-            $user->setPassword($password);
-            $user->setRoles(['ROLE_EMPRUNTEUR']);
+        $user = new User();
+        $user->setEmail('foo.foo@exmaple.com');
+        $password = $this->encoder->encodePassword($user,'123');
+        $user->setPassword($password);
+        $user->setRoles(['ROLE_EMPRUNTEUR']);
 
-            $manager->persist($user);
-            $users[]= $user;
-        }      
+        $manager->persist($user);
+
+        $emprunteur = new Emprunteur();
+        $emprunteur->setNom('Foo');
+        $emprunteur->setPrenom('Foo');
+        $emprunteur->setTel('123456789');
+        $emprunteur->setActif(true);
+        $emprunteur->setDateCreation(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-01-01 10:00:00'));
+        $emprunteur->setUser($user);
+
+        $manager->persist($emprunteur);
+        $emprunteurs[] = $emprunteur;
+        
+        $user = new User();
+        $user->setEmail('bar.bar@exmaple.com');
+        $password = $this->encoder->encodePassword($user,'123');
+        $user->setPassword($password);
+        $user->setRoles(['ROLE_EMPRUNTEUR']);
+
+        $manager->persist($user);
+
+        $emprunteur = new Emprunteur();
+        $emprunteur->setNom('Bar');
+        $emprunteur->setPrenom('Bar');
+        $emprunteur->setTel('987654321');
+        $emprunteur->setActif(false);
+        $emprunteur->setDateCreation(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-02-01 11:00:00'));
+        $emprunteur->setDateModification(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-05-01 12:00:00'));
+        $emprunteur->setUser($user);
+
+        $manager->persist($emprunteur);
+        $emprunteurs[] = $emprunteur;
+        
+        $user = new User();
+        $user->setEmail('baz.baz@exmaple.com');
+        $password = $this->encoder->encodePassword($user,'123');
+        $user->setPassword($password);
+        $user->setRoles(['ROLE_EMPRUNTEUR']);
+
+        $manager->persist($user);
+
+        $emprunteur = new Emprunteur();
+        $emprunteur->setNom('Baz');
+        $emprunteur->setPrenom('Baz');
+        $emprunteur->setTel('192873645');
+        $emprunteur->setActif(true);
+        $emprunteur->setDateCreation(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-03-01 12:00:00'));
+        $emprunteur->setUser($user);
+
+        $manager->persist($emprunteur);
+        $emprunteurs[] = $emprunteur;       
+
 
         for ($i = 0; $i < $count; $i++) {
             $user = new User();
@@ -75,18 +125,20 @@ class AppFixtures extends Fixture
             $user->setRoles(['ROLE_EMPRUNTEUR']);
 
             $manager->persist($user);
-            $users[]= $user;
+            
+            $emprunteur = new Emprunteur();
+            $emprunteur->setNom($this->faker->firstname());
+            $emprunteur->setPrenom($this->faker->lastname());
+            $emprunteur->setTel($this->faker->phoneNumber());
+            $emprunteur->setActif($this->faker->boolean());
+            $emprunteur->setDateCreation($this->faker->dateTimeThisDecade());
+            $emprunteur->setUser($user);
+
+            $manager->persist($emprunteur);
+            $emprunteurs[] = $emprunteur;
         }
 
-        return $users;
-    }
-
-    public function loadEmprunteurs(ObjectManager $manager, int $count)
-    {
-        $emprunteurs = [];
-
-        $emprunteur = new Emprunteur();
-
+        return $emprunteurs;
     }
 
     public function loadAuteurs(ObjectManager $manager, int $count)
