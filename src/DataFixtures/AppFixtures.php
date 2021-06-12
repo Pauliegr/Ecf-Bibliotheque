@@ -37,6 +37,8 @@ class AppFixtures extends Fixture
         $emprunteurs = $this->loadEmprunteurs($manager, 3);
         $auteurs = $this->loadAuteurs($manager, 5);
         $livres = $this->loadLivres($manager, 3);
+        $genres = $this->loadGenres($manager);
+        $emprunts = $this->loadEmprunts($manager, 3);
         
    
         $manager->flush();
@@ -203,6 +205,15 @@ class AppFixtures extends Fixture
         return $livres;
     }
 
+    public function loadGenres(ObjectManager $manager, int $count)
+    {
 
+    }
+
+    public function loadEmprunts(ObjectManager $manager, int $count)
+    {
+
+    }
+    
 }
 
