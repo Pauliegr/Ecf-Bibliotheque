@@ -228,8 +228,30 @@ class AppFixtures extends Fixture
     }
 
     public function loadEmprunts(ObjectManager $manager, int $count)
-    {
+    { /* Manque les id livre et id emprunteur*/
+        $emprunts = [];
         
+        $emprunt = new Emprunt();
+        $emprunt->setDateEmprunt(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-02-01 10:00:00'));
+        $emprunt->setDateRetour(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-03-01 10:00:00'));
+        $manager->persist($emprunt);
+        $emprunts[] = $emprunt;
+
+        $emprunt = new Emprunt();
+        $emprunt->setDateEmprunt(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-03-01 10:00:00'));
+        $emprunt->setDateRetour(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-04-01 10:00:00'));
+        $manager->persist($emprunt);
+        $emprunts[] = $emprunt;
+
+        $emprunt = new Emprunt();
+        $emprunt->setDateEmprunt(\DateTime::createFromFormat('Y-m-d H:i:s', '2020-04-01 10:00:00'));
+        $manager->persist($emprunt);
+        $emprunts[] = $emprunt;
+
+        for($i=0; $i < $count; $i++){
+            $emprunt = new Emprunt();
+            $emprunt->setDateEmprunt($this->faker->dateTimeThisDecade());
+        }
     }
     
 }
