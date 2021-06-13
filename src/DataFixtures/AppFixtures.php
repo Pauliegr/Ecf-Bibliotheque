@@ -37,7 +37,7 @@ class AppFixtures extends Fixture
         $emprunteurs = $this->loadEmprunteurs($manager, 3);
         $auteurs = $this->loadAuteurs($manager, 5);
         $livres = $this->loadLivres($manager, 3);
-        $genres = $this->loadGenres($manager);
+        $genres = $this->loadGenres($manager,3);
         $emprunts = $this->loadEmprunts($manager, 3);
         
    
@@ -207,12 +207,29 @@ class AppFixtures extends Fixture
 
     public function loadGenres(ObjectManager $manager, int $count)
     {
+        $types = ['Poésie', 'Nouvelle', 'Roman historique', "Roman d'amour", "Roman d'aventure", 'Science-fiction', 'Fantasy', 'Biographie', 'Conte', 'Témoignage', 'Théatre', 'Essai', 'Journal intime'];
 
+        for ($i=0; $i < 13 ; $i++){
+            $genre = new Genre();
+            $genre->setnom($types[$i]);
+            $manager->persist($genre);
+        }
+        
+        $genres = [];
+
+        for($i=0; $i < $count; $i++){
+            $genre = new Genre();
+            $genre->setNom($this->faker->word());
+
+            $manager->persist($genre);
+            $genres[] = $genre;
+        }
+        return $genres;
     }
 
     public function loadEmprunts(ObjectManager $manager, int $count)
     {
-
+        
     }
     
 }
